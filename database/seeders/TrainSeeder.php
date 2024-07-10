@@ -5,13 +5,14 @@ namespace Database\Seeders;
 use App\Models\Train;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Faker\Generator as Faker;
 
 class TrainSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run(Faker $faker): void
     {
         // $table->id();
         // $table->timestamps();
@@ -24,16 +25,20 @@ class TrainSeeder extends Seeder
         // $table->tinyInteger('N_carozze');
         // $table->boolean('In_orario');
         // $table->boolean('Cancellato');
-        $train = new Train();
-        $train->Azienda='Freccia Rossa';
-        $train->Stazione_partenza='Roma Termini';
-        $train->Stazione_arrivo='Livorno Centrale';
-        $train->Orario_partenza='2024-08-12 12:40:00';
-        $train->Orario_arrivo='2024-08-12 16:20:00';
-        $train->Codice_treno='KE454MRET0';
-        $train->N_carozze=5;
-        $train->In_orario=1;
-        $train->Cancellato=0;
-        $train->save();
+        for($i=0;$i<20;$i++)
+            {
+                $train = new Train();
+                $train->Azienda=$faker->company();
+                $train->Stazione_partenza=$faker->city();
+                $train->Stazione_arrivo=$faker->city();
+                $train->Orario_partenza=$faker->dateTimeBetween('-1 week','+1 week');
+                $train->Orario_arrivo=$faker->dateTimeBetween('-1 week','+1 week');
+                $train->Codice_treno=$faker->bothify('??###');
+                $train->N_carozze=$faker->numberBetween(2,30);
+                $train->In_orario=$faker->boolean();
+                $train->Cancellato=$faker->boolean();
+                
+                $train->save();
+            }
     }
 }
